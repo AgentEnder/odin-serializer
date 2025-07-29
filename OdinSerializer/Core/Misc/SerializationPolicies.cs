@@ -22,6 +22,9 @@ namespace OdinSerializer
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using UnityEngine;
+#if STANDALONE
+    using SerializeField = UnityEngine.SerializeFieldAttribute;
+#endif
 
     /// <summary>
     /// Contains a set of default implementations of the <see cref="ISerializationPolicy"/> interface.

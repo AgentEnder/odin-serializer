@@ -1,0 +1,237 @@
+// Minimal Unity stubs for standalone compilation
+#if STANDALONE
+
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+// UnityEngine stubs
+namespace UnityEngine
+{
+    public static class Debug
+    {
+        public static void Log(object message) { Console.WriteLine(message); }
+        public static void LogWarning(object message) { Console.WriteLine($"Warning: {message}"); }
+        public static void LogError(object message) { Console.WriteLine($"Error: {message}"); }
+        public static void LogException(Exception exception) { Console.WriteLine($"Exception: {exception}"); }
+    }
+
+    public struct Vector2
+    {
+        public float x, y;
+        public Vector2(float x, float y) { this.x = x; this.y = y; }
+    }
+
+    public struct Vector3
+    {
+        public float x, y, z;
+        public Vector3(float x, float y, float z) { this.x = x; this.y = y; this.z = z; }
+    }
+
+    public struct Vector4
+    {
+        public float x, y, z, w;
+        public Vector4(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; }
+    }
+
+    public struct Quaternion
+    {
+        public float x, y, z, w;
+        public Quaternion(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; }
+    }
+
+    public class Application
+    {
+        public static bool isPlaying => false;
+        public static string unityVersion => "Standalone";
+    }
+
+    public class SerializeFieldAttribute : Attribute { }
+    public class HideInInspectorAttribute : Attribute { }
+
+    public class RuntimeInitializeOnLoadMethodAttribute : Attribute
+    {
+        public RuntimeInitializeOnLoadMethodAttribute(RuntimeInitializeLoadType loadType) { }
+    }
+
+    public enum RuntimeInitializeLoadType
+    {
+        AfterSceneLoad,
+        BeforeSceneLoad,
+        AfterAssembliesLoaded,
+        BeforeSplashScreen,
+        SubsystemRegistration
+    }
+
+    public static class PlayerPrefs
+    {
+        public static string GetString(string key, string defaultValue = "") => defaultValue;
+        public static void SetString(string key, string value) { }
+    }
+
+    public abstract class Object
+    {
+        public static bool operator ==(Object x, Object y) => ReferenceEquals(x, y);
+        public static bool operator !=(Object x, Object y) => !ReferenceEquals(x, y);
+        public override bool Equals(object obj) => ReferenceEquals(this, obj);
+        public override int GetHashCode() => base.GetHashCode();
+    }
+
+    public interface ISerializationCallbackReceiver
+    {
+        void OnBeforeSerialize();
+        void OnAfterDeserialize();
+    }
+
+    public enum RuntimePlatform
+    {
+        OSXEditor = 0,
+        OSXPlayer = 1,  
+        WindowsPlayer = 2,
+        OSXWebPlayer = 3,
+        OSXDashboardPlayer = 4,
+        WindowsWebPlayer = 5,
+        WindowsEditor = 7,
+        IPhonePlayer = 8,
+        XBOX360 = 10,
+        PS3 = 9,
+        Android = 11,
+        NaCl = 12,
+        FlashPlayer = 15,
+        LinuxPlayer = 13,
+        LinuxEditor = 16,
+        WebGLPlayer = 17,
+        MetroPlayerX86 = 18,
+        WSAPlayerX86 = 18,
+        MetroPlayerX64 = 19,
+        WSAPlayerX64 = 19,
+        MetroPlayerARM = 20,
+        WSAPlayerARM = 20,
+        WP8Player = 21,
+        BB10Player = 22,
+        BlackBerryPlayer = 22,
+        TizenPlayer = 23,
+        PSP2 = 24,
+        PS4 = 25,
+        PSM = 26,
+        XboxOne = 27,
+        SamsungTVPlayer = 28,
+        WiiU = 30,
+        tvOS = 31,
+        Switch = 32,
+        Lumin = 33
+    }
+    
+    namespace Serialization
+    {
+        public class FormerlySerializedAsAttribute : Attribute
+        {
+            public string oldName;
+            public FormerlySerializedAsAttribute(string oldName) { this.oldName = oldName; }
+        }
+    }
+}
+
+// Unity Editor stubs
+namespace UnityEditor
+{
+    public static class EditorApplication
+    {
+        public static bool isPlaying => false;
+    }
+}
+
+// JetBrains stubs
+namespace JetBrains.Annotations
+{
+    public class NotNullAttribute : Attribute { }
+    public class CanBeNullAttribute : Attribute { }
+    public class MeansImplicitUseAttribute : Attribute { }
+}
+
+// System.Reflection.Emit stubs for compatibility
+namespace System.Reflection.Emit
+{
+    public static class Flags
+    {
+        public const MethodAttributes Public = MethodAttributes.Public;
+        public const MethodAttributes Static = MethodAttributes.Static;
+        public const MethodAttributes Virtual = MethodAttributes.Virtual;
+        public const MethodAttributes HideBySig = MethodAttributes.HideBySig;
+        public const MethodAttributes NewSlot = MethodAttributes.NewSlot;
+        public const MethodAttributes SpecialName = MethodAttributes.SpecialName;
+        public const MethodAttributes RTSpecialName = MethodAttributes.RTSpecialName;
+    }
+}
+
+// OdinSerializer specific stubs
+namespace OdinSerializer
+{
+    public class UnityReferenceResolver : IExternalIndexReferenceResolver
+    {
+        public UnityReferenceResolver() { }
+        
+        public bool CanReference(object value, out int index)
+        {
+            index = -1;
+            return false;
+        }
+        
+        public bool TryResolveReference(int index, out object result)
+        {
+            result = null;
+            return false;
+        }
+        
+        public List<UnityEngine.Object> GetReferencedUnityObjects() => new List<UnityEngine.Object>();
+        public void SetReferencedUnityObjects(List<UnityEngine.Object> objects) { }
+    }
+    
+    public static class EmitUtilities
+    {
+        public static bool CanEmit => false;
+        public static void CreateStaticReferenceFor(Type type, out FieldInfo field)
+        {
+            field = null;
+        }
+    }
+    
+    public static class FormatterEmitter
+    {
+        public static bool CanEmit => false;
+        public static string PRE_EMITTED_ASSEMBLY_NAME => "OdinSerializer.EmittedFormatters";
+        public static IFormatter GetEmittedFormatter(Type type) => null;
+        public static IFormatter GetEmittedFormatter(Type type, ISerializationPolicy policy) => null;
+    }
+    
+    public static class UnitySerializationUtility
+    {
+        public static bool GuessIfUnityWillSerialize(FieldInfo field) => false;
+        public static Type SerializeReferenceAttributeType => null;
+    }
+    
+    public class DelegateFormatter<T> : IFormatter<T>
+    {
+        public Type SerializedType => typeof(T);
+        public bool CanRead => false;
+        public bool CanWrite => false;
+        public T Deserialize(IDataReader reader) => default(T);
+        object IFormatter.Deserialize(IDataReader reader) => Deserialize(reader);
+        public void Serialize(T value, IDataWriter writer) { }
+        public void Serialize(object value, IDataWriter writer) => Serialize((T)value, writer);
+    }
+    
+    public class WeakDelegateFormatter : IFormatter
+    {
+        public WeakDelegateFormatter() { }
+        public WeakDelegateFormatter(object delegateRef) { }
+        
+        public Type SerializedType => typeof(object);
+        public bool CanRead => false;
+        public bool CanWrite => false;
+        public object Deserialize(IDataReader reader) => null;
+        public void Serialize(object value, IDataWriter writer) { }
+    }
+}
+
+#endif

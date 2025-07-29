@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>OdinSerializer</RootNamespace>
+    <AssemblyName>OdinSerializer.Core</AssemblyName>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8714;CS8765;CS8767;CS8610</NoWarn>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;ENABLE_PROFILER;STANDALONE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>STANDALONE</DefineConstants>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <!-- Include only core serialization files, excluding Unity-specific ones -->
+  <ItemGroup>
+    <Compile Include="Config\GlobalSerializationConfig.cs" />
+    <Compile Include="Core\DataReaderWriters\*.cs" />
+    <Compile Include="Core\DataReaderWriters\Binary\*.cs" />
+    <Compile Include="Core\DataReaderWriters\Json\*.cs" />
+    <Compile Include="Core\DataReaderWriters\SerializationNodes\*.cs" />
+    <Compile Include="Core\FormatterLocators\*.cs" />
+    <Compile Include="Core\Formatters\*.cs" />
+    <Compile Remove="Core\Formatters\FormatterEmitter.cs" />
+    <Compile Remove="Core\Formatters\DelegateFormatter.cs" />
+    <Compile Remove="Core\Formatters\MethodInfoFormatter.cs" />
+    <Compile Remove="Core\Formatters\ConstructorInfoFormatter.cs" />
+    <Compile Remove="Core\Formatters\FieldInfoFormatter.cs" />
+    <Compile Remove="Core\Formatters\PropertyInfoFormatter.cs" />
+    <Compile Include="Core\Serializers\*.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityStubs.cs" />
+    
+    <!-- Include most misc files but skip Unity-dependent ones -->
+    <Compile Include="Core\Misc\*.cs" />
+    <Compile Remove="Core\Misc\PrefabModification.cs" />
+    <Compile Remove="Core\Misc\PrefabModificationType.cs" />
+    
+    <!-- Include utility files that work standalone -->
+    <Compile Include="Utilities\Extensions\TypeExtensions.cs" />
+    <Compile Include="Utilities\Extensions\MemberInfoExtensions.cs" />
+    <Compile Include="Utilities\Extensions\FieldInfoExtensions.cs" />
+    <Compile Include="Utilities\Extensions\PropertyInfoExtensions.cs" />
+    <Compile Include="Utilities\Extensions\MethodInfoExtensions.cs" />
+    <Compile Include="Utilities\Extensions\StringExtensions.cs" />
+    <Compile Include="Utilities\Extensions\Operator.cs" />
+    <Compile Include="Utilities\Extensions\GarbageFreeIterators.cs" />
+    <Compile Include="Utilities\Misc\Cache.cs" />
+    <Compile Include="Utilities\Misc\FastTypeComparer.cs" />
+    <Compile Include="Utilities\Misc\ReferenceEqualityComparer.cs" />
+    <Compile Include="Utilities\Misc\UnsafeUtilities.cs" />
+    <Compile Include="Utilities\Misc\DoubleLookupDictionary.cs" />
+    <Compile Include="Utilities\Misc\ICacheNotificationReceiver.cs" />
+    <Compile Include="Utilities\Misc\MemberAliasFieldInfo.cs" />
+    <Compile Include="Utilities\Misc\MemberAliasPropertyInfo.cs" />
+    <Compile Include="Utilities\Misc\MemberAliasMethodInfo.cs" />
+    <Compile Include="Utilities\Misc\Flags.cs" />
+  </ItemGroup>
+
+</Project>
