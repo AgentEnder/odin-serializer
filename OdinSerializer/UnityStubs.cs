@@ -5,15 +5,76 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+// Simple logging system for OdinSerializer
+namespace StandaloneLogging
+{
+    public enum LogLevel
+    {
+        Error = 0,
+        Warning = 1,
+        Info = 2,
+        Debug = 3,
+        Verbose = 4
+    }
+
+    public static class SimpleLogger
+    {
+        private static LogLevel _currentLevel = LogLevel.Info;
+
+        public static void SetLogLevel(LogLevel level)
+        {
+            _currentLevel = level;
+        }
+
+        public static void Debug(string message)
+        {
+            Log(LogLevel.Debug, message);
+        }
+
+        public static void Info(string message)
+        {
+            Log(LogLevel.Info, message);
+        }
+
+        public static void Warning(string message)
+        {
+            Log(LogLevel.Warning, message);
+        }
+
+        public static void Error(string message)
+        {
+            Log(LogLevel.Error, message);
+        }
+
+        private static void Log(LogLevel level, string message)
+        {
+            if (level <= _currentLevel)
+            {
+                var prefix = level switch
+                {
+                    LogLevel.Error => "[ERROR] ",
+                    LogLevel.Warning => "[WARN] ",
+                    LogLevel.Info => "",
+                    LogLevel.Debug => "[DEBUG] ",
+                    LogLevel.Verbose => "[VERBOSE] ",
+                    _ => ""
+                };
+
+                Console.WriteLine($"{prefix}{message}");
+            }
+        }
+    }
+}
+
 // UnityEngine stubs
 namespace UnityEngine
 {
     public static class Debug
     {
-        public static void Log(object message) { Console.WriteLine(message); }
-        public static void LogWarning(object message) { Console.WriteLine($"Warning: {message}"); }
-        public static void LogError(object message) { Console.WriteLine($"Error: {message}"); }
-        public static void LogException(Exception exception) { Console.WriteLine($"Exception: {exception}"); }
+        public static void Log(object message) { StandaloneLogging.SimpleLogger.Debug(message?.ToString() ?? "null"); }
+        public static void LogWarning(object message) { StandaloneLogging.SimpleLogger.Warning(message?.ToString() ?? "null"); }
+        public static void LogError(object message) { StandaloneLogging.SimpleLogger.Error(message?.ToString() ?? "null"); }
+        public static void LogException(Exception exception) { StandaloneLogging.SimpleLogger.Error($"Exception: {exception}"); }
     }
 
     public struct Vector2
