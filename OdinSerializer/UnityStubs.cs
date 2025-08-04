@@ -107,7 +107,13 @@ namespace UnityEngine
         public static string unityVersion => "Standalone";
     }
 
-    public class SerializeFieldAttribute : Attribute { }
+    [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public class SerializeFieldAttribute : Attribute 
+    { 
+        public SerializeFieldAttribute() { }
+    }
+    
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     public class HideInInspectorAttribute : Attribute { }
 
     public class RuntimeInitializeOnLoadMethodAttribute : Attribute
@@ -138,6 +144,9 @@ namespace UnityEngine
         public override int GetHashCode() => base.GetHashCode();
     }
 
+    /// <summary>
+    /// Interface for objects that need custom serialization callback behavior
+    /// </summary>
     public interface ISerializationCallbackReceiver
     {
         void OnBeforeSerialize();
@@ -267,7 +276,19 @@ namespace OdinSerializer
     
     public static class UnitySerializationUtility
     {
-        public static bool GuessIfUnityWillSerialize(FieldInfo field) => false;
+        public static bool GuessIfUnityWillSerialize(FieldInfo field) 
+        {
+            // Check if the field has SerializeField attribute
+            if (field.GetCustomAttribute<UnityEngine.SerializeFieldAttribute>() != null)
+                return true;
+                
+            // Public fields are serialized by default in Unity
+            if (field.IsPublic && !field.IsStatic && !field.IsInitOnly)
+                return true;
+                
+            return false;
+        }
+        
         public static Type SerializeReferenceAttributeType => null;
     }
     
