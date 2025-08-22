@@ -1,0 +1,10 @@
+{
+  "targets": {
+    "build": {
+      "command": "dotnet build OdinSerializer.Core.csproj",
+      "options": {
+        "cwd": "{projectRoot}"
+      }
+    }
+  }
+}
